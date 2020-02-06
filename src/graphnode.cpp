@@ -1,17 +1,16 @@
-#include "graphedge.h"
 #include "graphnode.h"
+#include "graphedge.h"
 
-GraphNode::GraphNode(int id)
-{
-    _id = id;
-}
+GraphNode::GraphNode(int id) { _id = id; }
 
 GraphNode::~GraphNode()
 {
     //// STUDENT CODE
     ////
 
-    delete _chatBot; 
+    // Task 0: There is no memory allocation in this class for _chatBot. Thus
+    // deleting the pointer is incorrect
+    // delete _chatBot;
 
     ////
     //// EOF STUDENT CODE
@@ -40,7 +39,7 @@ void GraphNode::MoveChatbotHere(ChatBot *chatbot)
     _chatBot->SetCurrentNode(this);
 }
 
-void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
+void GraphNode::MoveChatbotToNewNode(GraphNode* newNode)
 {
     newNode->MoveChatbotHere(_chatBot);
     _chatBot = nullptr; // invalidate pointer at source
