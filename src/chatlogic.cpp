@@ -159,18 +159,18 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](std::shared_ptr<GraphNode> node) { return node->GetID() == std::stoi(parentToken->second); });
                             auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::shared_ptr<GraphNode> node) { return node->GetID() == std::stoi(childToken->second); });
 
-                            // create new edge
-                            std::shared_ptr<GraphEdge> edge = std::make_shared<GraphEdge>(id);
-                            edge->SetChildNode(childNode->get());
-                            edge->SetParentNode(parentNode->get());
-                            _edges.push_back(edge);
+                            // create new edge in the parent node
+                            (*parentNode)->AddEdgeToChildNode(id);
+                            (*parentNode)->GetChildEdge(id)->SetChildNode(childNode->get());
+                            (*parentNode)->GetChildEdge(id)->SetParentNode(parentNode->get());
+                            _edges.push_back((*parentNode)->GetChildEdge(id));
 
                             // find all keywords for current node
-                            AddAllTokensToElement("KEYWORD", tokens, *edge);
+                            AddAllTokensToElement("KEYWORD", tokens, *((*parentNode)->GetChildEdge(id)));
 
                             // store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(edge.get());
-                            (*parentNode)->AddEdgeToChildNode(edge.get());
+                            (*childNode)->AddEdgeToParentNode((*parentNode)->GetChildEdge(id));
+                            
                         }
 
                         ////
