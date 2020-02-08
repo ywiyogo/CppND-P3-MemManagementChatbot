@@ -1,6 +1,5 @@
 #include "graphnode.h"
 #include "graphedge.h"
-
 GraphNode::GraphNode(int id) { _id = id; }
 
 GraphNode::~GraphNode()
@@ -34,16 +33,18 @@ void GraphNode::AddEdgeToChildNode(int id)
 
 //// STUDENT CODE
 ////
-void GraphNode::MoveChatbotHere(ChatBot *chatbot)
+void GraphNode::MoveChatbotHere(ChatBot chatbot)
 {
-    _chatBot = chatbot;
-    _chatBot->SetCurrentNode(this);
+    // use move constructor
+    _chatBot = std::move(chatbot);
+    // send selected node answer to user
+    _chatBot.SetCurrentNode(this);
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode* newNode)
 {
-    newNode->MoveChatbotHere(_chatBot);
-    _chatBot = nullptr; // invalidate pointer at source
+    // use move assignment operator
+    newNode->MoveChatbotHere(std::move(_chatBot));
 }
 
 GraphEdge* GraphNode::GetChildEdge(int id)
@@ -54,6 +55,7 @@ GraphEdge* GraphNode::GetChildEdge(int id)
         if (edge->GetID() == id)
         {
             result = edge.get();
+            break;
         }
     }
     return result;

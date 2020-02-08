@@ -34,6 +34,7 @@ public:
     ChatBot(const ChatBot &filename);
     // 3 : copy assignment operator
     ChatBot &operator=(const ChatBot &source);
+    ChatBot &operator=(const std::unique_ptr<ChatBot> &source);
     // 4 : move constructor
     ChatBot(ChatBot &&source);
     // Move assignment operator
